@@ -1,11 +1,16 @@
 import './App.css'
 import { Router } from './router/Router'
+import { Box } from '@mui/material'
+import { ToastContainer } from 'react-toastify'
+import { Header } from './components'
 
 function App() {
   return (
-    <div className='App'>
+    <Box component='main' sx={{ backgroundColor: 'var(--bg-dark)' }}>
+      <Header />
       <Router />
-    </div>
+      <ToastContainer />
+    </Box>
   )
 }
 
