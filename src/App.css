@@ -76,9 +76,4 @@ a {
     margin-bottom: 3rem;
     margin: 2rem auto;
   }
-  .floating-addpost {
-    bottom: 5rem;
-    left: unset;
-    right: 1rem;
-  }
 }

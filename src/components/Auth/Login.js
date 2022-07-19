@@ -95,6 +95,7 @@ export const Login = ({ setSignupForm }) => {
             helperText={
               !inputValidation.email.isValid && inputValidation.email.msg
             }
+            focused
           />
           <Box position='relative'>
             <TextField
@@ -112,6 +113,7 @@ export const Login = ({ setSignupForm }) => {
                 !inputValidation.password.isValid &&
                 inputValidation.password.msg
               }
+              focused
             />
             {showPassword ? (
               <IconButton

@@ -142,6 +142,7 @@ export const Signup = ({ setSignupForm }) => {
               !inputValidation.firstname.isValid &&
               inputValidation.firstname.msg
             }
+            focused
           />
           <TextField
             label='Last Name'
@@ -157,6 +158,7 @@ export const Signup = ({ setSignupForm }) => {
             helperText={
               !inputValidation.lastname.isValid && inputValidation.lastname.msg
             }
+            focused
           />
           <TextField
             label='Username'
@@ -167,6 +169,7 @@ export const Signup = ({ setSignupForm }) => {
             margin='normal'
             fullWidth
             required
+            focused
           />
           <TextField
             label='Email'
@@ -182,6 +185,7 @@ export const Signup = ({ setSignupForm }) => {
             helperText={
               !inputValidation.email.isValid && inputValidation.email.msg
             }
+            focused
           />
           <Box position='relative'>
             <TextField
@@ -199,6 +203,7 @@ export const Signup = ({ setSignupForm }) => {
                 !inputValidation.password.isValid &&
                 inputValidation.password.msg
               }
+              focused
             />
             {showPassword ? (
               <IconButton
