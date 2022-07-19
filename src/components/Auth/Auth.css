@@ -70,7 +70,7 @@
 } */
 
 .css-1x5jdmq {
-  color: var(--white);
+  color: var(--white) !important;
 }
 
 .css-12l42na.Mui-disabled {
