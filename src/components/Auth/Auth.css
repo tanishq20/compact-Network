@@ -1,0 +1,59 @@
+.login-image {
+  width: 40vw;
+  padding-left: 5rem;
+  padding-top: 5rem;
+  box-sizing: border-box;
+}
+
+.user-avatar {
+  filter: brightness(40%);
+  border: 2px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.user-avatar:hover,
+.user-avatar-focus {
+  filter: brightness(100%);
+  border: 2px solid var(--primary-light);
+  border-radius: 50%;
+}
+
+.password-icon {
+  top: 25px;
+  right: 20px;
+}
+
+/* important is used to overwrite the mui css properties, will figure out some other way and remove it in further commits */
+
+/* For form text color */
+.css-1x5jdmq {
+  color: var(--white) !important;
+}
+
+/* For password icon color */
+.css-1hmxbfw {
+  color: var(--white) !important;
+}
+
+/* For login btn */
+.css-12l42na.Mui-disabled {
+  color: var(--white) !important;
+  background-color: var(--submit-btn) !important;
+  opacity: 0.5;
+}
+
+/* For Signup btn */
+.css-nxzcop.Mui-disabled {
+  color: var(--white) !important;
+  background-color: var(--submit-btn) !important;
+  opacity: 0.5;
+}
+
+/* For Guest login btn */
+.css-1cjxj42.Mui-disabled {
+  color: var(--submit-btn) !important;
+  border: 1px solid var(--submit-btn) !important;
+  background-color: var(--white);
+  opacity: 0.2;
+}
