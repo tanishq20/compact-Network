@@ -26,65 +26,31 @@
 
 /* important is used to overwrite the mui css properties, will figure out some other way and remove it in further commits */
 
-/* .css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root {
-  color: var(--text-primary) !important;
-}
-
-.css-1sumxir-MuiFormLabel-root-MuiInputLabel-root {
-  color: var(--primary-dark) !important;
-}
-
-.css-md26zr-MuiInputBase-root-MuiOutlinedInput-root {
-  color: var(--white) !important;
-}
-
-.css-1d3z3hw-MuiOutlinedInput-notchedOutline {
-  border-color: var(--primary-dark) !important;
-}
-
-.css-4ne2uz-MuiButtonBase-root-MuiIconButton-root {
-  color: var(--white) !important;
-}
-
-.css-1wc848c-MuiFormHelperText-root {
-  color: var(--red) !important;
-} */
-
-/* .css-1vhaqj4-MuiButtonBase-root-MuiButton-root.Mui-disabled {
-  color: var(--white) !important;
-  background-color: var(--submit-btn) !important;
-  opacity: 0.5;
-}
-
-.css-155d8c9-MuiButtonBase-root-MuiButton-root.Mui-disabled {
-  color: var(--white) !important;
-  background-color: var(--submit-btn) !important;
-  opacity: 0.5;
-}
-
-.css-18t5w9h-MuiButtonBase-root-MuiButton-root.Mui-disabled {
-  color: var(--submit-btn) !important;
-  border: 1px solid var(--submit-btn) !important;
-  background-color: var(--white);
-  opacity: 0.2;
-} */
-
+/* For form text color */
 .css-1x5jdmq {
   color: var(--white) !important;
 }
 
+/* For password icon color */
+.css-1hmxbfw {
+  color: var(--white) !important;
+}
+
+/* For login btn */
 .css-12l42na.Mui-disabled {
   color: var(--white) !important;
   background-color: var(--submit-btn) !important;
   opacity: 0.5;
 }
 
+/* For Signup btn */
 .css-nxzcop.Mui-disabled {
   color: var(--white) !important;
   background-color: var(--submit-btn) !important;
   opacity: 0.5;
 }
 
+/* For Guest login btn */
 .css-1cjxj42.Mui-disabled {
   color: var(--submit-btn) !important;
   border: 1px solid var(--submit-btn) !important;
