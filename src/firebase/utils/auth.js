@@ -11,12 +11,12 @@ const createUser = async (
   userData,
   dispatch,
   userLogin,
-  loading,
+  loadingAuth,
   navigate,
   location
 ) => {
   const { firstname, lastname, username, email, password, avatar } = userData
-  dispatch(loading(true))
+  dispatch(loadingAuth(true))
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password)
     await setDoc(doc(db, 'users', res.user.uid), {
@@ -55,7 +55,7 @@ const createUser = async (
         })
     }
   } finally {
-    dispatch(loading(false))
+    dispatch(loadingAuth(false))
   }
 }
 
@@ -63,12 +63,12 @@ const loginUser = async (
   loginData,
   dispatch,
   userLogin,
-  loading,
+  loadingAuth,
   navigate,
   location
 ) => {
   const { email, password } = loginData
-  dispatch(loading(true))
+  dispatch(loadingAuth(true))
   try {
     const res = await signInWithEmailAndPassword(auth, email, password)
     dispatch(userLogin(res.user.uid))
@@ -100,7 +100,7 @@ const loginUser = async (
         })
     }
   } finally {
-    dispatch(loading(false))
+    dispatch(loadingAuth(false))
   }
 }
 
@@ -108,12 +108,12 @@ const guestLoginUser = async (
   userData,
   dispatch,
   userLogin,
-  loading,
+  loadingAuth,
   navigate,
   location
 ) => {
   const { email, password } = userData
-  dispatch(loading(true))
+  dispatch(loadingAuth(true))
   try {
     const res = await signInWithEmailAndPassword(auth, email, password)
     dispatch(userLogin(res.user.uid))
@@ -145,7 +145,7 @@ const guestLoginUser = async (
         })
     }
   } finally {
-    dispatch(loading(false))
+    dispatch(loadingAuth(false))
   }
 }
 

@@ -7,6 +7,7 @@ const initialState = {
   allUsers: [],
   isLoggedIn: localStorage.getItem('userId') === null ? false : true,
   isAuthLoading: false,
+  isUserLoading: false,
   isFollowLoading: false,
   profileDetails: {},
 }
@@ -24,12 +25,12 @@ const authSlice = createSlice({
       state.isLoggedIn = false
       localStorage.removeItem('userId')
     },
-    loading: (state, action) => {
+    loadingAuth: (state, action) => {
       state.isAuthLoading = action.payload
     },
   },
   extraReducers: {},
 })
 
-export const { userLogin, userLogout, loading } = authSlice.actions
+export const { userLogin, userLogout, loadingAuth } = authSlice.actions
 export default authSlice.reducer

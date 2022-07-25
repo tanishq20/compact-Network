@@ -1,1 +1,1 @@
-export { userLogin, userLogout, loading } from './auth/authSlice'
+export { userLogin, userLogout, loadingAuth } from './auth/authSlice'

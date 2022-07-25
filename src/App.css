@@ -53,6 +53,11 @@ a {
   text-decoration: none;
 }
 
+.main-container {
+  flex-grow: 1;
+  margin-top: 3.4rem;
+}
+
 .main-container .MuiGrid-root .main-body {
   width: 50vw;
   margin: 3rem auto 1rem 16rem;
