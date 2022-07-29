@@ -1,11 +1,12 @@
-import { Toast } from '../../components'
-import { auth, db } from '../firebaseInitialize'
+import { createAsyncThunk } from '@reduxjs/toolkit'
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
 } from 'firebase/auth'
-import { doc, setDoc } from 'firebase/firestore'
+import { doc, getDoc, setDoc } from 'firebase/firestore'
+import { Toast } from '../../components'
+import { auth, db } from '../firebaseInitialize'
 
 const createUser = async (
   userData,
@@ -167,4 +168,19 @@ const logoutUser = async (dispatch, userLogout, navigate) => {
   }
 }
 
-export { createUser, loginUser, guestLoginUser, logoutUser }
+const getUserData = createAsyncThunk('auth/getUserData', async (userId) => {
+  try {
+    const docRef = doc(db, 'users', userId)
+    const docSnap = await getDoc(docRef)
+    if (docSnap.exists()) {
+      return docSnap.data()
+    } else {
+      Toast({
+        message: 'No such document!',
+        type: 'warning',
+      })
+    }
+  } catch (error) {}
+})
+
+export { createUser, loginUser, guestLoginUser, logoutUser, getUserData }

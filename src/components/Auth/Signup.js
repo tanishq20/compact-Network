@@ -16,7 +16,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { createUser } from '../../firebase/utils/auth'
-import { userLogin, loadingAuth } from '../../redux/features'
+import { userLogin, loadingAuth } from '../../redux/features/auth/authSlice'
 import { checkInputs } from '../../authValidation/authValidation'
 import { userAvatars } from '../../utilities'
 
