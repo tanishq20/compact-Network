@@ -29,6 +29,9 @@ const authSlice = createSlice({
     loadingAuth: (state, action) => {
       state.isAuthLoading = action.payload
     },
+    loadingUser: (state, action) => {
+      state.isUserLoading = action.payload
+    },
   },
   extraReducers: {
     [getUserData.pending]: (state) => {
@@ -44,5 +47,6 @@ const authSlice = createSlice({
   },
 })
 
-export const { userLogin, userLogout, loadingAuth } = authSlice.actions
+export const { userLogin, userLogout, loadingAuth, loadingUser } =
+  authSlice.actions
 export default authSlice.reducer

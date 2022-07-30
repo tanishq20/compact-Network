@@ -4,7 +4,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from 'firebase/auth'
-import { doc, getDoc, setDoc } from 'firebase/firestore'
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore'
 import { Toast } from '../../components'
 import { auth, db } from '../firebaseInitialize'
 
@@ -183,4 +183,31 @@ const getUserData = createAsyncThunk('auth/getUserData', async (userId) => {
   } catch (error) {}
 })
 
-export { createUser, loginUser, guestLoginUser, logoutUser, getUserData }
+const updateUserData = async (userData, userId, dispatch, loadingUser) => {
+  dispatch(loadingUser(true))
+  try {
+    const docRef = doc(db, 'users', userId)
+    await updateDoc(docRef, userData)
+    dispatch(getUserData(userId))
+    Toast({
+      message: 'Updated successful.',
+      type: 'success',
+    })
+  } catch (error) {
+    Toast({
+      message: 'Some error occured, please try again later.',
+      type: 'warning',
+    })
+  } finally {
+    dispatch(loadingUser(false))
+  }
+}
+
+export {
+  createUser,
+  loginUser,
+  guestLoginUser,
+  logoutUser,
+  getUserData,
+  updateUserData,
+}

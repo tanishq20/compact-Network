@@ -44,21 +44,28 @@ export const Header = () => {
     >
       <Container maxWidth='xl'>
         <Toolbar disableGutters>
-          <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: 'flex',
+              alignItems: 'center',
+              cursor: 'pointer',
+            }}
+          >
             <Box component='div' sx={{ mr: 1 }}>
               <img src={Icon} alt='logo' />
             </Box>
             <Typography
               variant='h6'
               noWrap
-              component='a'
-              href='/'
+              onClick={() => navigate('/')}
               sx={{
                 fontSize: '1.5rem',
                 fontWeight: 700,
                 letterSpacing: '.3rem',
                 color: 'inherit',
                 textDecoration: 'none',
+                cursor: 'pointer',
               }}
             >
               NETWORK

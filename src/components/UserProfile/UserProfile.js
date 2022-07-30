@@ -1,10 +1,11 @@
-import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import './UserProfile.css'
 import {
   Avatar,
   Box,
   Button,
+  CircularProgress,
   Link,
   Modal,
   Skeleton,
@@ -13,14 +14,70 @@ import {
   Typography,
 } from '@mui/material'
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined'
+import { checkInputs } from '../../authValidation/authValidation'
+import { updateUserData } from '../../firebase/utils/auth'
+import { loadingUser } from '../../redux/features/auth/authSlice'
 
 export const UserProfile = () => {
   const { user, isUserLoading } = useSelector((store) => store.auth)
+  const dispatch = useDispatch()
 
+  const defaultProfileData = {
+    firstname: user?.firstname,
+    lastname: user?.lastname,
+    username: user?.username,
+    bio: user?.bio,
+    website: user?.website,
+  }
+
+  const [profileData, setProfileData] = useState(defaultProfileData)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [formValidation, setFormValidation] = useState(false)
+  const [inputValidation, setInputValidation] = useState({
+    firstname: { isValid: true, msg: '' },
+    lastname: { isValid: true, msg: '' },
+  })
+
+  let userId = localStorage.getItem('userId')
+
+  useEffect(() => {
+    let flag = true
+    Object.entries(inputValidation).forEach((item) => {
+      if (!item[1].isValid) {
+        flag = false
+      }
+    })
+    setFormValidation(flag)
+  }, [inputValidation])
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setProfileData((prev) => ({ ...prev, [name]: value }))
+    if (name === '') {
+      setInputValidation((prev) => ({
+        ...prev,
+        [name]: { isValid: true, msg: '' },
+      }))
+    } else {
+      const validateValue = checkInputs(name, value)
+      setInputValidation((prev) => ({ ...prev, [name]: { ...validateValue } }))
+    }
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    const data = new FormData(e.currentTarget)
+    const userData = {
+      ...user,
+      firstname: data.get('firstname'),
+      lastname: data.get('lastname'),
+      username: data.get('username'),
+      bio: data.get('bio'),
+      website: data.get('website'),
+    }
+    updateUserData(userData, userId, dispatch, loadingUser)
+    setProfileData(defaultProfileData)
+    setIsModalOpen(false)
   }
 
   return (
@@ -153,40 +210,44 @@ export const UserProfile = () => {
                       label='First Name'
                       name='firstname'
                       id='firstname'
+                      value={profileData.firstname}
                       autoComplete='firstname'
-                      // onChange={(e) => handleChange(e)}
+                      onChange={(e) => handleChange(e)}
                       type='text'
                       margin='normal'
                       fullWidth
                       required
                       autoFocus
-                      // error={inputValidation.firstname.isValid ? false : true}
-                      // helperText={
-                      //   !inputValidation.firstname.isValid &&
-                      //   inputValidation.firstname.msg
-                      // }
+                      error={inputValidation.firstname.isValid ? false : true}
+                      helperText={
+                        !inputValidation.firstname.isValid &&
+                        inputValidation.firstname.msg
+                      }
                       focused
                     />
                     <TextField
                       label='Last Name'
                       name='lastname'
                       id='lastname'
+                      value={profileData.lastname}
                       autoComplete='lastname'
-                      // onChange={(e) => handleChange(e)}
+                      onChange={(e) => handleChange(e)}
                       type='text'
                       margin='normal'
                       fullWidth
                       required
-                      // error={inputValidation.lastname.isValid ? false : true}
-                      // helperText={
-                      //   !inputValidation.lastname.isValid && inputValidation.lastname.msg
-                      // }
+                      error={inputValidation.lastname.isValid ? false : true}
+                      helperText={
+                        !inputValidation.lastname.isValid &&
+                        inputValidation.lastname.msg
+                      }
                       focused
                     />
                     <TextField
                       label='Username'
                       name='username'
                       id='username'
+                      value={profileData.username}
                       autoComplete='off'
                       type='text'
                       margin='normal'
@@ -198,16 +259,12 @@ export const UserProfile = () => {
                       label='Bio'
                       name='bio'
                       id='bio'
+                      value={profileData.bio}
                       autoComplete='bio'
-                      // onChange={(e) => handleChange(e)}
                       type='text'
                       margin='normal'
                       fullWidth
                       required
-                      // error={inputValidation.email.isValid ? false : true}
-                      // helperText={
-                      //   !inputValidation.email.isValid && inputValidation.email.msg
-                      // }
                       focused
                     />
                     <Box position='relative'>
@@ -215,17 +272,12 @@ export const UserProfile = () => {
                         label='Website'
                         name='website'
                         id='website'
+                        value={profileData.website}
                         autoComplete='website'
-                        // onChange={(e) => handleChange(e)}
                         type='text'
                         margin='normal'
                         fullWidth
                         required
-                        // error={inputValidation.password.isValid ? false : true}
-                        // helperText={
-                        //   !inputValidation.password.isValid &&
-                        //   inputValidation.password.msg
-                        // }
                         focused
                       />
                     </Box>
@@ -234,9 +286,13 @@ export const UserProfile = () => {
                       variant='contained'
                       fullWidth
                       sx={{ mt: 3, mb: 2 }}
-                      // disabled={formValidation ? false : true}
+                      disabled={formValidation ? false : true}
                     >
-                      Update
+                      {isUserLoading ? (
+                        <CircularProgress sx={{ color: 'var(--white)' }} />
+                      ) : (
+                        'Update'
+                      )}
                     </Button>
                   </Box>
                 </Box>
@@ -266,7 +322,7 @@ export const UserProfile = () => {
                 variant='body2'
                 sx={{ color: 'var(--text-secondary)' }}
               >
-                {user?.username}
+                @{user?.username}
               </Typography>
             </Stack>
             <Box component={'p'} mt={2} sx={{ color: 'var(--text-primary)' }}>
