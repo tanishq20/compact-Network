@@ -32,6 +32,10 @@ export const Login = ({ setSignupForm }) => {
   })
 
   useEffect(() => {
+    document.title = 'Compact Network'
+  }, [])
+
+  useEffect(() => {
     let flag = true
     Object.entries(inputValidation).forEach((item) => {
       if (!item[1].isValid) {
