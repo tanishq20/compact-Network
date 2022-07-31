@@ -15,12 +15,12 @@ import Icon from '../../assets/logo/logo.png'
 import { logoutUser } from '../../firebase/utils/auth'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { userLogout } from '../../redux/features'
+import { userLogout } from '../../redux/features/auth/authSlice'
 
 export const Header = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { isLoggedIn } = useSelector((state) => state.auth)
+  const { isLoggedIn, user } = useSelector((state) => state.auth)
 
   const [anchorElUser, setAnchorElUser] = useState(null)
 
@@ -44,21 +44,28 @@ export const Header = () => {
     >
       <Container maxWidth='xl'>
         <Toolbar disableGutters>
-          <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: 'flex',
+              alignItems: 'center',
+              cursor: 'pointer',
+            }}
+          >
             <Box component='div' sx={{ mr: 1 }}>
               <img src={Icon} alt='logo' />
             </Box>
             <Typography
               variant='h6'
               noWrap
-              component='a'
-              href='/'
+              onClick={() => navigate('/')}
               sx={{
                 fontSize: '1.5rem',
                 fontWeight: 700,
                 letterSpacing: '.3rem',
                 color: 'inherit',
                 textDecoration: 'none',
+                cursor: 'pointer',
               }}
             >
               NETWORK
@@ -68,11 +75,22 @@ export const Header = () => {
             <Stack
               sx={{ flexGrow: 0, display: 'flex', alignItems: 'center' }}
               direction={'row'}
+              flexWrap='wrap'
+              justifyContent='flex-end'
               spacing={1}
             >
-              <Tooltip title='User' sx={{ mr: 2 }}>
+              {user?.firstname && (
+                <Typography variant='h5' sx={{ color: 'var(--white)' }}>
+                  Hii {user?.firstname}!!
+                </Typography>
+              )}
+              <Tooltip title={user?.firstname || 'User'} sx={{ mr: 2 }}>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt='John Deo' src='/static/images/avatar/2.jpg' />
+                  <Avatar
+                    src={user?.avatar}
+                    alt={user?.firstname}
+                    aria-label={user?.firstname}
+                  />
                 </IconButton>
               </Tooltip>
               <Box sx={{ backgroundColor: 'var(--secondary-dark-hover)' }}>
@@ -99,6 +117,7 @@ export const Header = () => {
                         backgroundColor: 'var(--secondary-dark)',
                       },
                     }}
+                    onClick={() => navigate('/profile')}
                   >
                     <Typography
                       textAlign='center'

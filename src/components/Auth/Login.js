@@ -15,7 +15,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { guestLoginUser, loginUser } from '../../firebase/utils/auth'
-import { userLogin, loading } from '../../redux/features'
+import { userLogin, loadingAuth } from '../../redux/features/auth/authSlice'
 import { checkInputs } from '../../authValidation/authValidation'
 
 export const Login = ({ setSignupForm }) => {
@@ -30,6 +30,10 @@ export const Login = ({ setSignupForm }) => {
     email: { isValid: true, msg: '' },
     password: { isValid: true, msg: '' },
   })
+
+  useEffect(() => {
+    document.title = 'Compact Network'
+  }, [])
 
   useEffect(() => {
     let flag = true
@@ -65,11 +69,11 @@ export const Login = ({ setSignupForm }) => {
       email: data.get('email'),
       password: data.get('password'),
     }
-    loginUser(loginData, dispatch, userLogin, loading, navigate, location)
+    loginUser(loginData, dispatch, userLogin, loadingAuth, navigate, location)
   }
   return (
     <Container component='main' maxWidth='xs'>
-      <Stack alignItems='center' mt={5}>
+      <Stack alignItems='center' justifyContent='center' mt={5}>
         <Typography
           component='h1'
           variant='h5'
@@ -152,7 +156,7 @@ export const Login = ({ setSignupForm }) => {
                 { email: 'guest@gmail.com', password: 'Guest@1234' },
                 dispatch,
                 userLogin,
-                loading,
+                loadingAuth,
                 navigate,
                 location
               )

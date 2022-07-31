@@ -16,7 +16,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { createUser } from '../../firebase/utils/auth'
-import { userLogin, loading } from '../../redux/features'
+import { userLogin, loadingAuth } from '../../redux/features/auth/authSlice'
 import { checkInputs } from '../../authValidation/authValidation'
 import { userAvatars } from '../../utilities'
 
@@ -37,6 +37,10 @@ export const Signup = ({ setSignupForm }) => {
     email: { isValid: true, msg: '' },
     password: { isValid: true, msg: '' },
   })
+
+  useEffect(() => {
+    document.title = 'Compact Network'
+  }, [])
 
   useEffect(() => {
     let flag = true
@@ -77,7 +81,7 @@ export const Signup = ({ setSignupForm }) => {
       password: data.get('password'),
       avatar: userProfileAvatar,
     }
-    createUser(userData, dispatch, userLogin, loading, navigate, location)
+    createUser(userData, dispatch, userLogin, loadingAuth, navigate, location)
   }
 
   return (

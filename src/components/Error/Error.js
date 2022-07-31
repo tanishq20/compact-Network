@@ -1,8 +1,12 @@
 import { Stack, Box, Typography } from '@mui/material'
+import { useEffect } from 'react'
 import error from '../../assets/error.svg'
 import './Error.css'
 
 export const Error = () => {
+  useEffect(() => {
+    document.title = '404 | Compact Network'
+  }, [])
   return (
     <Stack
       height='100vh'

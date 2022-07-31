@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { getUserData } from '../../../firebase/utils/auth'
 
 const initialState = {
   id: localStorage.getItem('userId') || null,
@@ -7,8 +8,8 @@ const initialState = {
   allUsers: [],
   isLoggedIn: localStorage.getItem('userId') === null ? false : true,
   isAuthLoading: false,
+  isUserLoading: false,
   isFollowLoading: false,
-  profileDetails: {},
 }
 
 const authSlice = createSlice({
@@ -22,14 +23,30 @@ const authSlice = createSlice({
     userLogout: (state) => {
       state.id = null
       state.isLoggedIn = false
+      state.user = {}
       localStorage.removeItem('userId')
     },
-    loading: (state, action) => {
+    loadingAuth: (state, action) => {
       state.isAuthLoading = action.payload
     },
+    loadingUser: (state, action) => {
+      state.isUserLoading = action.payload
+    },
   },
-  extraReducers: {},
+  extraReducers: {
+    [getUserData.pending]: (state) => {
+      state.isUserLoading = true
+    },
+    [getUserData.fulfilled]: (state, action) => {
+      state.isUserLoading = false
+      state.user = action.payload
+    },
+    [getUserData.rejected]: (state) => {
+      state.isUserLoading = false
+    },
+  },
 })
 
-export const { userLogin, userLogout, loading } = authSlice.actions
+export const { userLogin, userLogout, loadingAuth, loadingUser } =
+  authSlice.actions
 export default authSlice.reducer

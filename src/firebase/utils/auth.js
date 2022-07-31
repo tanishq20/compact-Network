@@ -1,22 +1,23 @@
-import { Toast } from '../../components'
-import { auth, db } from '../firebaseInitialize'
+import { createAsyncThunk } from '@reduxjs/toolkit'
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
 } from 'firebase/auth'
-import { doc, setDoc } from 'firebase/firestore'
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore'
+import { Toast } from '../../components'
+import { auth, db } from '../firebaseInitialize'
 
 const createUser = async (
   userData,
   dispatch,
   userLogin,
-  loading,
+  loadingAuth,
   navigate,
   location
 ) => {
   const { firstname, lastname, username, email, password, avatar } = userData
-  dispatch(loading(true))
+  dispatch(loadingAuth(true))
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password)
     await setDoc(doc(db, 'users', res.user.uid), {
@@ -55,7 +56,7 @@ const createUser = async (
         })
     }
   } finally {
-    dispatch(loading(false))
+    dispatch(loadingAuth(false))
   }
 }
 
@@ -63,12 +64,12 @@ const loginUser = async (
   loginData,
   dispatch,
   userLogin,
-  loading,
+  loadingAuth,
   navigate,
   location
 ) => {
   const { email, password } = loginData
-  dispatch(loading(true))
+  dispatch(loadingAuth(true))
   try {
     const res = await signInWithEmailAndPassword(auth, email, password)
     dispatch(userLogin(res.user.uid))
@@ -100,7 +101,7 @@ const loginUser = async (
         })
     }
   } finally {
-    dispatch(loading(false))
+    dispatch(loadingAuth(false))
   }
 }
 
@@ -108,12 +109,12 @@ const guestLoginUser = async (
   userData,
   dispatch,
   userLogin,
-  loading,
+  loadingAuth,
   navigate,
   location
 ) => {
   const { email, password } = userData
-  dispatch(loading(true))
+  dispatch(loadingAuth(true))
   try {
     const res = await signInWithEmailAndPassword(auth, email, password)
     dispatch(userLogin(res.user.uid))
@@ -145,7 +146,7 @@ const guestLoginUser = async (
         })
     }
   } finally {
-    dispatch(loading(false))
+    dispatch(loadingAuth(false))
   }
 }
 
@@ -167,4 +168,46 @@ const logoutUser = async (dispatch, userLogout, navigate) => {
   }
 }
 
-export { createUser, loginUser, guestLoginUser, logoutUser }
+const getUserData = createAsyncThunk('auth/getUserData', async (userId) => {
+  try {
+    const docRef = doc(db, 'users', userId)
+    const docSnap = await getDoc(docRef)
+    if (docSnap.exists()) {
+      return docSnap.data()
+    } else {
+      Toast({
+        message: 'No such document!',
+        type: 'warning',
+      })
+    }
+  } catch (error) {}
+})
+
+const updateUserData = async (userData, userId, dispatch, loadingUser) => {
+  dispatch(loadingUser(true))
+  try {
+    const docRef = doc(db, 'users', userId)
+    await updateDoc(docRef, userData)
+    dispatch(getUserData(userId))
+    Toast({
+      message: 'Updated successful.',
+      type: 'success',
+    })
+  } catch (error) {
+    Toast({
+      message: 'Some error occured, please try again later.',
+      type: 'warning',
+    })
+  } finally {
+    dispatch(loadingUser(false))
+  }
+}
+
+export {
+  createUser,
+  loginUser,
+  guestLoginUser,
+  logoutUser,
+  getUserData,
+  updateUserData,
+}
